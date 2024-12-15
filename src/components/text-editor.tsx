@@ -7,6 +7,8 @@ const TextEditor = () => {
   const quillRef = useRef<any>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
+  const isLocalChange = useRef(false);
+
   const documentRef = doc(db, "documents", "sample-doc");
 
   const saveContent = () => {
@@ -16,7 +18,9 @@ const TextEditor = () => {
 
       setDoc(documentRef, { content: content.ops }, { merge: true })
         .then(() => console.log("content saved"))
-        .catch(console.error); 
+        .catch(console.error);
+
+      isLocalChange.current = false;
     }
   };
 
@@ -25,11 +29,14 @@ const TextEditor = () => {
       const editor = quillRef.current.getEditor();
       editor.on =
         ("text-change",
-        () => {
-          setIsEditing(true);
-          saveContent();
+        (delta: any, oldDelta: any, source: any) => {
+          isLocalChange.current = true;
+          if ((source = "user")) {
+            setIsEditing(true);
+            saveContent();
 
-          setTimeout(() => setIsEditing(false), 5000);
+            setTimeout(() => setIsEditing(false), 5000);
+          }
         });
     }
   });

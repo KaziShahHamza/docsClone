@@ -1,4 +1,4 @@
-import "./index.css";
+import "./App.css";
 import { auth } from "./firebase-config";
 import { signInAnonymously, onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
