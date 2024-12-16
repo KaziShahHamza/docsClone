@@ -1,24 +1,25 @@
-import "./App.css";
+// src/App.js
+import { useEffect } from "react";
 import { auth } from "./firebase-config";
 import { signInAnonymously, onAuthStateChanged } from "firebase/auth";
-import { useEffect } from "react";
-import TextEditor from "./components/text-editor";
+import Editor from "./components/text-editor";
 
 function App() {
   useEffect(() => {
     signInAnonymously(auth);
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, user => {
       if (user) {
-        console.log("user signed in : ", user.uid);
+        console.log("User signed in:", user.uid);
       }
     });
   }, []);
+  
   return (
     <div className="App">
       <header>
         <h1>Google Docs Clone</h1>
-      </header> 
-      <TextEditor />
+      </header>
+      <Editor />
     </div>
   );
 }
