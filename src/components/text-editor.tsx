@@ -57,7 +57,7 @@ const TextEditor = () => {
       });
 
       const editor = quillRef.current.getEditor();
-      editor.on("text-change", (delta, oldDelta, source) => {
+      editor.on("text-change", (delta: string, oldDelta: string, source: string) => {
         if (source === "user") {
           isLocalChange.current = true;
           setIsEditing(true);
